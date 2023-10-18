@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS_KEY}@cluster0.ltbxnxt.mongodb.net/?retryWrites=true&w=majority`;
-// console.log(uri);
+console.log(uri);
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -29,43 +29,7 @@ const client = new MongoClient(uri, {
 
 
 
-   app.post("/coffees", async (req, res) => {
-    const aCoffeedata = req.body;
-    const result = await CoffeesData.insertOne(aCoffeedata);
-    res.send(result);
-   });
-
-
-   app.get("/coffees", async(req, res) =>{
-     const cursor = CoffeesData.find();
-     const result = await cursor.toArray();
-     res.send(result)
    
-   })
-
-   app.delete("/coffees/:id", async(req, res) =>{
-     const id = req.params.id;
-     const query ={_id: new ObjectId(id)};
-     const result = await CoffeesData.deleteOne(query);
-     console.log(result);
-     res.send(result);
-   })
-
-
-
-   app.post('/coffeesfllows', async(req, res)=> {
-     const images = req.body;
-     const result = await CoffeesFollows.insertOne(images);
-     console.log(result);
-     res.send(result);
-   })
-
-   app.get('/coffeesfllows', async(req, res)=> {
-     const cursor = CoffeesFollows.find();
-     const result = await cursor.toArray();
-     res.send(result)
-   })
-
 
     await client.db("admin").command({ ping: 1 });
     console.log(
