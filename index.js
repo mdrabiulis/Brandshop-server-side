@@ -39,7 +39,13 @@ async function run() {
   })
 
 
-// product
+  app.get("/product/:id", async(req, res)=>{
+    const id = req.params.id;
+    const query = {_id: new ObjectId(id)};
+    const result = await AssignmentData.findOne(query);
+    res.send(result);
+    console.log(result);
+  })
  
 
 
@@ -70,8 +76,26 @@ async function run() {
 
 
 
-// put
+  app.put('/product/:id', async(req, res) => {
+    const id = req.params.id;
+    const filter ={_id: new ObjectId(id)}
+    const options = {upsert: true}
+    const updatedproducts = req.body;
+    const updateproducts = {
+      $set: {
+        Name:updatedproducts.Name,
+        Photo:updatedproducts.Photo,
+        Category:updatedproducts.Category,
+        BrandName:updatedproducts.BrandName,
+        Price:updatedproducts.Price,
+        Rating:updatedproducts.Rating, 
+        description :updatedproducts.description}
+    }
+    const result = await AssignmentData.updateOne(filter,updateproducts,options)
+    res.send(result)
+    console.log(result);
 
+  })
 
 
 
