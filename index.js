@@ -27,7 +27,7 @@ async function run() {
   try {
     client.connect();
     const AssignmentData = client.db("assignmentDB").collection("assignmentdata");
-
+    const userInfo = client.db("assignmentDB").collection("userInfo");
 
 
 
@@ -74,8 +74,6 @@ async function run() {
 
 
 
-
-
   app.put('/product/:id', async(req, res) => {
     const id = req.params.id;
     const filter ={_id: new ObjectId(id)}
@@ -99,13 +97,30 @@ async function run() {
 
 
 
-  app.delete('/products/:id', async(req, res) =>{
-    const id = req.params.id;
-    const query = {_id: new ObjectId(id)};
-    const result = await AssignmentData.deleteOne(query);
-    res.send(result);
+
+
+
+
+  // user API
+  // ==========
+
+
+  app.get("/user", async(req, res) =>{
+    const cursor = userInfo.find();
+    const result = await cursor.toArray();
+    res.send(result)
+  
   })
 
+
+
+
+  app.post("/user", async (req, res) => {
+    const usersData = req.body;
+    const result = await userInfo.insertOne(usersData);
+    res.send(result);
+    console.log(usersData);
+  });
 
 
 
